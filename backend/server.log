@@ -1,0 +1,12 @@
+🚀 Server running on port 8000
+📱 API available at http://localhost:8000/api
+🔗 Health check: http://localhost:8000/api/health
+Login request body: { email: 'enietanjames@gmail.com', password: 'Password123' }
+Login request rawBody: {"email":"enietanjames@gmail.com","password":"Password123"}
+Extracted email: enietanjames@gmail.com
+Extracted password: Password123
+Login request body: { email: 'enietanjames@gmail.com', password: 'Password123' }
+Login request rawBody: {"email":"enietanjames@gmail.com","password":"Password123"}
+Extracted email: enietanjames@gmail.com
+Extracted password: Password123
+SIGTERM received, shutting down gracefully

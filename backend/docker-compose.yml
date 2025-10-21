@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: trumpet_db
+      POSTGRES_USER: trumpet_user
+      POSTGRES_PASSWORD: trumpet_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://trumpet_user:trumpet_password@db:5432/trumpet_db
+      - REDIS_URL=redis://redis:6379
+      - SECRET_KEY=trumpet-super-secret-key-2024
+      - FRONTEND_URL=http://localhost:8080
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  postgres_data:

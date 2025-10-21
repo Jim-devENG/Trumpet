@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Loading Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        .test-image { max-width: 300px; border: 2px solid #ccc; margin: 10px 0; }
+        .url { background: #f0f0f0; padding: 10px; margin: 10px 0; word-break: break-all; font-family: monospace; }
+        .status { padding: 5px 10px; border-radius: 4px; margin: 5px 0; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .loading { background: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <h1>Image Loading Test - New Approach</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Direct Image URL (Original Approach)</h2>
+        <div class="url">URL: http://192.168.1.101:8000/api/image/8406a099-24c8-4d40-8180-65d1c032da00.png</div>
+        <div id="status1" class="status loading">Loading...</div>
+        <img id="img1" src="http://192.168.1.101:8000/api/image/8406a099-24c8-4d40-8180-65d1c032da00.png" 
+             alt="Test Image 1" 
+             class="test-image"
+             onload="updateStatus('status1', 'success', '✅ Image 1 loaded successfully')"
+             onerror="updateStatus('status1', 'error', '❌ Image 1 failed to load')">
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: Base64 Data URL (New Approach)</h2>
+        <div class="url">URL: http://192.168.1.101:8000/api/image-base64/8406a099-24c8-4d40-8180-65d1c032da00.png</div>
+        <div id="status2" class="status loading">Loading...</div>
+        <div id="img2-container">Loading base64 image...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Static File URL (Fallback)</h2>
+        <div class="url">URL: http://192.168.1.101:8000/uploads/8406a099-24c8-4d40-8180-65d1c032da00.png</div>
+        <div id="status3" class="status loading">Loading...</div>
+        <img id="img3" src="http://192.168.1.101:8000/uploads/8406a099-24c8-4d40-8180-65d1c032da00.png" 
+             alt="Test Image 3" 
+             class="test-image"
+             onload="updateStatus('status3', 'success', '✅ Image 3 loaded successfully')"
+             onerror="updateStatus('status3', 'error', '❌ Image 3 failed to load')">
+    </div>
+    
+    <script>
+        function updateStatus(elementId, type, message) {
+            const element = document.getElementById(elementId);
+            element.className = `status ${type}`;
+            element.textContent = message;
+        }
+        
+        // Test base64 approach
+        async function loadBase64Image() {
+            try {
+                const response = await fetch('http://192.168.1.101:8000/api/image-base64/8406a099-24c8-4d40-8180-65d1c032da00.png');
+                const data = await response.json();
+                
+                if (data.success && data.dataUrl) {
+                    const img = document.createElement('img');
+                    img.src = data.dataUrl;
+                    img.alt = 'Test Image 2';
+                    img.className = 'test-image';
+                    img.onload = () => updateStatus('status2', 'success', '✅ Base64 image loaded successfully');
+                    img.onerror = () => updateStatus('status2', 'error', '❌ Base64 image failed to load');
+                    
+                    document.getElementById('img2-container').innerHTML = '';
+                    document.getElementById('img2-container').appendChild(img);
+                } else {
+                    updateStatus('status2', 'error', '❌ Failed to get base64 data');
+                }
+            } catch (error) {
+                updateStatus('status2', 'error', '❌ Error: ' + error.message);
+            }
+        }
+        
+        // Load base64 image
+        loadBase64Image();
+        
+        console.log('🧪 Image Loading Test Page Loaded');
+        console.log('Current origin:', window.location.origin);
+        console.log('Current hostname:', window.location.hostname);
+    </script>
+</body>
+</html>
+
+

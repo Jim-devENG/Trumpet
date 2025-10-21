@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-image { max-width: 300px; border: 2px solid #ccc; margin: 10px 0; }
+        .url { background: #f0f0f0; padding: 10px; margin: 10px 0; word-break: break-all; }
+    </style>
+</head>
+<body>
+    <h1>Image Loading Test</h1>
+    
+    <h2>Test 1: Direct Image URL</h2>
+    <div class="url">URL: http://192.168.1.101:8000/api/image/8406a099-24c8-4d40-8180-65d1c032da00.png</div>
+    <img src="http://192.168.1.101:8000/api/image/8406a099-24c8-4d40-8180-65d1c032da00.png" 
+         alt="Test Image 1" 
+         class="test-image"
+         onload="console.log('✅ Image 1 loaded successfully')"
+         onerror="console.error('❌ Image 1 failed to load')">
+    
+    <h2>Test 2: Static File URL</h2>
+    <div class="url">URL: http://192.168.1.101:8000/uploads/8406a099-24c8-4d40-8180-65d1c032da00.png</div>
+    <img src="http://192.168.1.101:8000/uploads/8406a099-24c8-4d40-8180-65d1c032da00.png" 
+         alt="Test Image 2" 
+         class="test-image"
+         onload="console.log('✅ Image 2 loaded successfully')"
+         onerror="console.error('❌ Image 2 failed to load')">
+    
+    <h2>Test 3: Localhost URL</h2>
+    <div class="url">URL: http://localhost:8000/api/image/8406a099-24c8-4d40-8180-65d1c032da00.png</div>
+    <img src="http://localhost:8000/api/image/8406a099-24c8-4d40-8180-65d1c032da00.png" 
+         alt="Test Image 3" 
+         class="test-image"
+         onload="console.log('✅ Image 3 loaded successfully')"
+         onerror="console.error('❌ Image 3 failed to load')">
+    
+    <script>
+        console.log('🧪 Image Test Page Loaded');
+        console.log('Current origin:', window.location.origin);
+        console.log('Current hostname:', window.location.hostname);
+    </script>
+</body>
+</html>
+
+

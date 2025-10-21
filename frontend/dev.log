@@ -1,0 +1,128 @@
+Port 8080 is in use, trying another one...
+Port 8081 is in use, trying another one...
+Port 8082 is in use, trying another one...
+Port 8083 is in use, trying another one...
+
+  VITE v5.4.19  ready in 379 ms
+
+  ➜  Local:   http://localhost:8084/
+  ➜  Network: http://192.168.1.101:8084/
+6:38:18 PM [vite] ✨ new dependencies optimized: socket.io-client, date-fns
+6:38:18 PM [vite] ✨ optimized dependencies changed. reloading
+6:38:21 PM [vite] hmr update /src/components/NotificationBell.tsx, /src/index.css
+6:38:21 PM [vite] hmr update /src/components/NotificationBell.tsx, /src/index.css
+6:38:27 PM [vite] hmr update /src/components/NotificationBell.tsx, /src/index.css
+6:38:36 PM [vite] hmr update /src/context/NotificationContext.tsx, /src/index.css
+6:38:36 PM [vite] hmr update /src/context/NotificationContext.tsx, /src/index.css
+6:38:44 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+6:38:52 PM [vite] hmr update /src/App.tsx, /src/index.css
+6:39:05 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+6:39:15 PM [vite] hmr update /src/components/NotificationBell.tsx, /src/index.css
+6:39:15 PM [vite] hmr update /src/components/NotificationBell.tsx, /src/index.css
+6:39:15 PM [vite] hmr update /src/context/NotificationContext.tsx, /src/index.css
+6:39:15 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+6:39:15 PM [vite] hmr update /src/App.tsx, /src/index.css
+7:35:33 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:35:47 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:35:56 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:36:11 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:36:24 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:36:37 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:36:37 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:37:19 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:37:30 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:38:33 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:38:43 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:38:52 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:42:23 PM [vite] hmr update /src/pages/Index.tsx, /src/index.css, /src/categories/Library.tsx, /src/pages/Profile.tsx, /src/pages/Login.tsx, /src/pages/Messages.tsx, /src/context/AuthContext.tsx, /src/context/NotificationContext.tsx, /src/components/dashboard/Dashboard.tsx
+7:43:13 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:43:38 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:43:57 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:44:11 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:44:11 PM [vite] hmr update /src/pages/Index.tsx, /src/index.css, /src/categories/Library.tsx, /src/pages/Profile.tsx, /src/pages/Login.tsx, /src/pages/Messages.tsx, /src/context/AuthContext.tsx, /src/context/NotificationContext.tsx, /src/components/dashboard/Dashboard.tsx
+7:44:11 PM [vite] hmr update /src/pages/Index.tsx, /src/index.css, /src/categories/Library.tsx, /src/pages/Profile.tsx, /src/pages/Login.tsx, /src/pages/Messages.tsx, /src/context/AuthContext.tsx, /src/context/NotificationContext.tsx, /src/components/dashboard/Dashboard.tsx
+Error processing file src/components/dashboard/Dashboard.tsx: SyntaxError: Unexpected token (1702:0)
+    at constructor (/Users/mac/Downloads/Trumpet/node_modules/@babel/parser/lib/index.js:362:19)
+    at TypeScriptParserMixin.raise (/Users/mac/Downloads/Trumpet/node_modules/@babel/parser/lib/index.js:3259:19)
+    at TypeScriptParserMixin.unexpected (/Users/mac/Downloads/Trumpet/node_modules/@babel/parser/lib/index.js:3279:16)
+    at TypeScriptParserMixin.parseExprAtom (/Users/mac/Downloads/Trumpet/node_modules/@babel/parser/lib/index.js:10970:16)
+    at TypeScriptParserMixin.parseExprAtom (/Users/mac/Downloads/Trumpet/node_modules/@babel/parser/lib/index.js:6811:20)
+    at TypeScriptParserMixin.parseExprSubscripts (/Users/mac/Downloads/Trumpet/node_modules/@babel/parser/lib/index.js:10592:23)
+    at TypeScriptParserMixin.parseUpdate (/Users/mac/Downloads/Trumpet/node_modules/@babel/parser/lib/index.js:10577:21)
+    at TypeScriptParserMixin.parseMaybeUnary (/Users/mac/Downloads/Trumpet/node_modules/@babel/parser/lib/index.js:10557:23)
+    at TypeScriptParserMixin.parseMaybeUnary (/Users/mac/Downloads/Trumpet/node_modules/@babel/parser/lib/index.js:9483:18)
+    at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (/Users/mac/Downloads/Trumpet/node_modules/@babel/parser/lib/index.js:10411:61) {
+  code: 'BABEL_PARSER_SYNTAX_ERROR',
+  reasonCode: 'UnexpectedToken',
+  loc: Position { line: 1702, column: 0, index: 75359 },
+  pos: 75359,
+  syntaxPlugin: undefined
+}
+7:49:02 PM [vite] Pre-transform error:   x Expression expected
+      ,-[/Users/mac/Downloads/Trumpet/frontend/src/components/dashboard/Dashboard.tsx:1702:1]
+ 1699 |     </div>
+ 1700 |   );
+ 1701 | }
+ 1702 | }
+      : ^
+      `----
+
+
+Caused by:
+    Syntax Error
+7:52:10 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:52:19 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:55:58 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:56:16 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:58:50 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:59:00 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:59:00 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:59:07 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:59:07 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+7:59:18 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:04:26 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:04:32 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:04:32 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:04:39 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:04:39 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:04:44 PM [vite] page reload src/components/CategoryTagSelector.tsx
+8:04:45 PM [vite] page reload src/components/CategoryTagSelector.tsx
+8:04:49 PM [vite] hmr update /src/pages/Index.tsx, /src/index.css, /src/categories/Library.tsx, /src/pages/Profile.tsx, /src/pages/Login.tsx, /src/pages/Messages.tsx, /src/context/AuthContext.tsx, /src/context/NotificationContext.tsx, /src/components/dashboard/Dashboard.tsx
+8:05:40 PM [vite] hmr update /src/pages/Index.tsx, /src/index.css, /src/categories/Library.tsx, /src/pages/Profile.tsx, /src/pages/Login.tsx, /src/pages/Messages.tsx, /src/context/AuthContext.tsx, /src/context/NotificationContext.tsx, /src/components/dashboard/Dashboard.tsx
+8:05:40 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:16:48 PM [vite] hmr update /src/pages/Index.tsx, /src/index.css, /src/categories/Library.tsx, /src/pages/Profile.tsx, /src/pages/Login.tsx, /src/pages/Messages.tsx, /src/context/AuthContext.tsx, /src/context/NotificationContext.tsx, /src/components/dashboard/Dashboard.tsx
+8:17:54 PM [vite] page reload src/components/ui/progress.tsx
+8:17:55 PM [vite] page reload src/components/ui/progress.tsx
+8:18:04 PM [vite] page reload src/components/ui/tabs.tsx
+8:18:05 PM [vite] page reload src/components/ui/tabs.tsx
+8:18:26 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:18:39 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:19:17 PM [vite] hmr update /src/App.tsx, /src/index.css
+8:19:17 PM [vite] hmr update /src/App.tsx, /src/index.css
+8:19:25 PM [vite] hmr update /src/App.tsx, /src/index.css
+8:19:25 PM [vite] hmr update /src/App.tsx, /src/index.css
+8:19:33 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:19:55 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:20:07 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:20:30 PM [vite] hmr update /src/index.css
+8:21:40 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:21:49 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:26:37 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:26:54 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:27:15 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:27:34 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:28:50 PM [vite] hmr update /src/pages/Index.tsx, /src/index.css, /src/categories/Library.tsx, /src/pages/Profile.tsx, /src/pages/Login.tsx, /src/pages/Messages.tsx, /src/context/AuthContext.tsx, /src/context/NotificationContext.tsx, /src/components/dashboard/Dashboard.tsx
+8:29:24 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:29:33 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:29:33 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:30:51 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:31:00 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:31:16 PM [vite] hmr update /src/pages/Index.tsx, /src/index.css, /src/categories/Library.tsx, /src/pages/Profile.tsx, /src/pages/Login.tsx, /src/pages/Messages.tsx, /src/context/AuthContext.tsx, /src/context/NotificationContext.tsx, /src/components/dashboard/Dashboard.tsx
+8:31:16 PM [vite] page reload src/components/ui/progress.tsx
+8:31:16 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
+8:31:16 PM [vite] page reload src/components/ui/tabs.tsx
+8:31:16 PM [vite] hmr update /src/index.css
+8:31:16 PM [vite] hmr update /src/App.tsx, /src/index.css
+8:31:16 PM [vite] hmr update /src/pages/Index.tsx, /src/index.css, /src/categories/Library.tsx, /src/pages/Profile.tsx, /src/pages/Login.tsx, /src/pages/Messages.tsx, /src/context/AuthContext.tsx, /src/context/NotificationContext.tsx, /src/components/dashboard/Dashboard.tsx
+8:31:16 PM [vite] page reload src/components/ui/progress.tsx
+8:31:16 PM [vite] hmr update /src/components/dashboard/Dashboard.tsx, /src/index.css
