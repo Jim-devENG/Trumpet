@@ -36,7 +36,7 @@ export const NotificationProvider = ({ children }: { children: React.ReactNode }
   useEffect(() => {
     if (user && apiService.getToken()) {
       try {
-        const API_BASE = (import.meta as any)?.env?.VITE_API_BASE_URL || 'http://localhost:8000/api';
+        const API_BASE = (import.meta as any)?.env?.VITE_API_BASE_URL || 'https://trumpet-backend.onrender.com/api';
         const SOCKET_URL = API_BASE.replace('/api', '');
         
         console.log('Connecting to socket:', SOCKET_URL);
