@@ -1,8 +1,6 @@
 export const API_BASE_URL =
   (typeof window !== 'undefined' && (import.meta as any)?.env?.VITE_API_BASE_URL) ||
-  (typeof window !== 'undefined'
-    ? `http://${window.location.hostname}:8000/api`
-    : 'http://localhost:8000/api');
+  'https://trumpet-backend.onrender.com/api';
 
 class ApiService {
   private token: string | null = null;
