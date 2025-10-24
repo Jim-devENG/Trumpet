@@ -77,7 +77,7 @@ export const VideoCall: React.FC<VideoCallProps> = ({
       }
 
       // Initialize socket connection
-      socketRef.current = io('http://localhost:8000');
+      socketRef.current = io('https://trumpet-backend.onrender.com');
       
       socketRef.current.on('connect', () => {
         console.log('Connected to video call server');

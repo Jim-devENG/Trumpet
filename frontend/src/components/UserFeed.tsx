@@ -138,7 +138,7 @@ export const UserFeed: React.FC<UserFeedProps> = ({ userId, currentUser }) => {
   useEffect(() => {
     // Initialize WebSocket connection for real-time social features
     const initializeSocket = () => {
-      const socket = io('http://192.168.1.101:8000', {
+      const socket = io('https://trumpet-backend.onrender.com', {
         transports: ['websocket', 'polling'],
         timeout: 20000,
         forceNew: true
