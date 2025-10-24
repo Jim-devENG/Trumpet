@@ -200,7 +200,7 @@ app.post('/api/auth/register', async (req, res) => {
       first_name: firstName,
       last_name: lastName,
       occupation,
-      interests: JSON.stringify(interests),
+      interests: interests, // Remove JSON.stringify for debug too
       location
     });
 
@@ -214,7 +214,7 @@ app.post('/api/auth/register', async (req, res) => {
         last_name: lastName,
         password_hash: passwordHash,
         occupation,
-        interests: JSON.stringify(interests),
+        interests: interests, // Remove JSON.stringify - send as array directly
         location
       })
       .select()
