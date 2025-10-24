@@ -288,7 +288,7 @@ app.post('/api/auth/login', async (req, res) => {
           firstName: user.first_name,
           lastName: user.last_name,
           occupation: user.occupation,
-          interests: JSON.parse(user.interests || '[]'),
+          interests: user.interests || [],
           location: user.location,
           avatar: user.avatar,
           bio: user.bio,
@@ -308,15 +308,25 @@ app.post('/api/auth/login', async (req, res) => {
 
 app.get('/api/auth/me', authenticateToken, async (req, res) => {
   try {
+    console.log('Getting user with ID:', req.user.userId);
+    
     const { data: user, error } = await supabase
       .from('users')
       .select('*')
       .eq('id', req.user.userId)
       .single();
 
-    if (error || !user) {
+    if (error) {
+      console.error('Database error in /auth/me:', error);
+      return res.status(500).json({ success: false, message: 'Database error', error: error.message });
+    }
+
+    if (!user) {
+      console.log('User not found with ID:', req.user.userId);
       return res.status(404).json({ success: false, message: 'User not found' });
     }
+
+    console.log('User found:', { id: user.id, email: user.email, username: user.username });
 
     res.json({
       success: true,
@@ -328,7 +338,7 @@ app.get('/api/auth/me', authenticateToken, async (req, res) => {
           firstName: user.first_name,
           lastName: user.last_name,
           occupation: user.occupation,
-          interests: JSON.parse(user.interests || '[]'),
+          interests: user.interests || [],
           location: user.location,
           avatar: user.avatar,
           bio: user.bio,
