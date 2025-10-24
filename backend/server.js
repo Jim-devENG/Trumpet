@@ -175,7 +175,9 @@ const authenticateToken = (req, res, next) => {
 // Auth routes
 app.post('/api/auth/register', async (req, res) => {
   try {
+    console.log('Raw request body:', JSON.stringify(req.body, null, 2));
     const { email, username, firstName, lastName, occupation, interests, location, password } = req.body;
+    console.log('Extracted interests:', interests, 'Type:', typeof interests);
 
     // Check if user exists
     const { data: existingUser, error: checkError } = await supabase
@@ -200,7 +202,9 @@ app.post('/api/auth/register', async (req, res) => {
       first_name: firstName,
       last_name: lastName,
       occupation,
-      interests: interests, // Remove JSON.stringify for debug too
+      interests: interests,
+      interestsType: typeof interests,
+      interestsStringified: JSON.stringify(interests),
       location
     });
 
