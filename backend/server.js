@@ -193,6 +193,17 @@ app.post('/api/auth/register', async (req, res) => {
     const userId = uuidv4();
 
     // Insert user
+    console.log('Creating user with data:', {
+      id: userId,
+      email,
+      username,
+      first_name: firstName,
+      last_name: lastName,
+      occupation,
+      interests: JSON.stringify(interests),
+      location
+    });
+
     const { data: newUser, error: insertError } = await supabase
       .from('users')
       .insert({
@@ -210,8 +221,16 @@ app.post('/api/auth/register', async (req, res) => {
       .single();
 
     if (insertError) {
-      return res.status(500).json({ success: false, message: 'Failed to create user' });
+      console.error('User creation error:', insertError);
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Failed to create user',
+        error: insertError.message,
+        details: insertError
+      });
     }
+
+    console.log('User created successfully:', newUser);
 
     // Generate token
     const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
