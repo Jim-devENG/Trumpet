@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Fix - Trumpet App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        .code {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .warning {
+            color: #ffc107;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚨 Database Fix for Trumpet App</h1>
+        
+        <div class="step">
+            <h2>Step 1: Open Supabase SQL Editor</h2>
+            <p>Click this button to open your Supabase SQL Editor:</p>
+            <button class="button" onclick="openSupabase()">Open Supabase SQL Editor</button>
+        </div>
+
+        <div class="step">
+            <h2>Step 2: Copy the SQL Code</h2>
+            <p>Copy the entire code below and paste it into the SQL Editor:</p>
+            <div class="code" id="sqlCode">-- URGENT: Run this in Supabase SQL Editor to fix the database
+-- This will create the missing tables and fix the 500 error
+
+-- Step 1: Create posts table (this is the main issue)
+CREATE TABLE IF NOT EXISTS posts (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    author_id UUID NOT NULL,
+    content TEXT NOT NULL,
+    image_url TEXT,
+    video_url TEXT,
+    likes_count INTEGER DEFAULT 0,
+    comments_count INTEGER DEFAULT 0,
+    shares_count INTEGER DEFAULT 0,
+    is_public BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Step 2: Create users table if it doesn't exist
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    occupation VARCHAR(100),
+    interests TEXT[],
+    location VARCHAR(100),
+    bio TEXT,
+    profile_image_url TEXT,
+    cover_image_url TEXT,
+    is_verified BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE,
+    last_login TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Step 3: Add foreign key constraint if it doesn't exist
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.table_constraints
+        WHERE constraint_name = 'posts_author_id_fkey'
+    ) THEN
+        ALTER TABLE posts ADD CONSTRAINT posts_author_id_fkey
+        FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE;
+    END IF;
+END $$;
+
+-- Step 4: Create basic indexes
+CREATE INDEX IF NOT EXISTS idx_posts_author_id ON posts(author_id);
+CREATE INDEX IF NOT EXISTS idx_posts_created_at ON posts(created_at DESC);
+
+-- Step 5: Enable RLS
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
+
+-- Step 6: Create basic RLS policies
+DROP POLICY IF EXISTS "Users can read all posts" ON posts;
+CREATE POLICY "Users can read all posts" ON posts FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Users can insert posts" ON posts;
+CREATE POLICY "Users can insert posts" ON posts FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Users can read all users" ON users;
+CREATE POLICY "Users can read all users" ON users FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Users can insert their own data" ON users;
+CREATE POLICY "Users can insert their own data" ON users FOR INSERT WITH CHECK (true);</div>
+            <button class="button" onclick="copyToClipboard()">Copy SQL Code</button>
+        </div>
+
+        <div class="step">
+            <h2>Step 3: Run the SQL</h2>
+            <p>After pasting the code, click the <strong>"Run"</strong> button in Supabase SQL Editor.</p>
+        </div>
+
+        <div class="step">
+            <h2>Step 4: Test Your App</h2>
+            <p>Once you've run the SQL script:</p>
+            <ol>
+                <li>Refresh your browser</li>
+                <li>Test creating a post</li>
+                <li>Check if the feed loads properly</li>
+            </ol>
+            <button class="button" onclick="testApp()">Test App</button>
+        </div>
+
+        <div id="status"></div>
+    </div>
+
+    <script>
+        function openSupabase() {
+            window.open('https://supabase.com/dashboard/project/jyhqegfijgkzotopvhcg/sql', '_blank');
+        }
+
+        function copyToClipboard() {
+            const sqlCode = document.getElementById('sqlCode').textContent;
+            navigator.clipboard.writeText(sqlCode).then(() => {
+                showStatus('SQL code copied to clipboard!', 'success');
+            }).catch(() => {
+                showStatus('Failed to copy. Please select and copy manually.', 'error');
+            });
+        }
+
+        function testApp() {
+            window.open('http://localhost:8080', '_blank');
+        }
+
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.innerHTML = `<div class="${type}">${message}</div>`;
+        }
+    </script>
+</body>
+</html>

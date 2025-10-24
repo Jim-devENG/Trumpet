@@ -416,6 +416,8 @@ app.get('/api/posts', authenticateToken, async (req, res) => {
     const { page = 1, limit = 20 } = req.query;
     const offset = (page - 1) * limit;
 
+    console.log('Fetching posts from database...');
+    
     const { data: posts, error } = await supabase
       .from('posts')
       .select('*')
@@ -423,12 +425,24 @@ app.get('/api/posts', authenticateToken, async (req, res) => {
       .range(offset, offset + limit - 1);
 
     if (error) {
-      return res.status(500).json({ success: false, message: 'Database error' });
+      console.error('Database error:', error);
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Database error',
+        error: error.message,
+        details: error
+      });
     }
 
-    res.json({ success: true, data: posts });
+    console.log('Posts fetched successfully:', posts?.length || 0, 'posts');
+    res.json({ success: true, data: posts || [] });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Server error' });
+    console.error('Server error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server error',
+      error: error.message
+    });
   }
 });
 
@@ -439,6 +453,43 @@ app.get('/api/health', (req, res) => {
     message: 'Trumpet API is running',
     timestamp: new Date().toISOString()
   });
+});
+
+// Database test endpoint
+app.get('/api/test-db', async (req, res) => {
+  try {
+    console.log('Testing database connection...');
+    
+    // Test if we can connect to Supabase
+    const { data, error } = await supabase
+      .from('posts')
+      .select('count(*)')
+      .limit(1);
+    
+    if (error) {
+      console.error('Database connection error:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Database connection failed',
+        error: error.message,
+        details: error
+      });
+    }
+    
+    console.log('Database connection successful');
+    res.json({
+      success: true,
+      message: 'Database connection successful',
+      data: data
+    });
+  } catch (error) {
+    console.error('Database test error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Database test failed',
+      error: error.message
+    });
+  }
 });
 
 // Socket.io authentication middleware
