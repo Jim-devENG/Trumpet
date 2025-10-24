@@ -81,7 +81,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   };
 
   return (
-    <div className="min-h-screen gradient-kingdom flex items-center justify-center p-4">
+    <div className="min-h-screen gradient-kingdom flex items-center justify-center p-4 animate-in fade-in duration-500">
       <Card className="w-full max-w-4xl gradient-card border-border/50 shadow-kingdom">
         <CardHeader className="text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
@@ -115,7 +115,8 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
         </CardHeader>
 
         <CardContent className="space-y-6">
-          {step === 1 && (
+          <div className="animate-in fade-in duration-300">
+            {step === 1 && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {OCCUPATIONS.map((occupation) => (
                 <Card
@@ -211,6 +212,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
               </div>
             </div>
           )}
+          </div>
 
           <div className="flex justify-end pt-6">
             <Button

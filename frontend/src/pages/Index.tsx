@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
 import { Dashboard } from "@/components/dashboard/Dashboard";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import { LoadingScreen } from "@/components/LoadingScreen";
 import { apiService, API_BASE_URL } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -102,14 +103,7 @@ const Index = () => {
   };
 
   if (isLoading || authLoading) {
-    return (
-      <div className="min-h-screen gradient-kingdom flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   // If user is authenticated, show dashboard
@@ -129,7 +123,7 @@ const Index = () => {
 
   // Show login/signup options
   return (
-    <div className="min-h-screen gradient-kingdom flex items-center justify-center p-4">
+    <div className="min-h-screen gradient-kingdom flex items-center justify-center p-4 animate-in fade-in duration-500">
       <div className="w-full max-w-4xl">
         {/* Header */}
         <div className="text-center mb-12">

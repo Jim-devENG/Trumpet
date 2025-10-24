@@ -49,7 +49,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen gradient-kingdom flex items-center justify-center p-4">
+    <div className="min-h-screen gradient-kingdom flex items-center justify-center p-4 animate-in fade-in duration-500">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">

@@ -413,7 +413,7 @@ const Dashboard: React.FC = () => {
   console.log('Dashboard: AuthUser exists, rendering dashboard');
 
   return (
-    <div className="min-h-screen gradient-kingdom">
+    <div className="min-h-screen gradient-kingdom animate-in fade-in duration-300">
       {/* Header */}
       <header className="border-b border-border/20 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4">

@@ -15,8 +15,13 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AuthUser>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [initialized, setInitialized] = useState<boolean>(false);
 
-  const fetchMe = useCallback(async () => {
+  const fetchMe = useCallback(async (showLoading = true) => {
+    if (showLoading) {
+      setLoading(true);
+    }
+    
     try {
       console.log('AuthContext: fetchMe called, getting current user...');
       const res = await apiService.getCurrentUser();
@@ -33,18 +38,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(null);
     } finally {
       setLoading(false);
+      setInitialized(true);
     }
   }, []);
 
+  // Initial load - only run once
   useEffect(() => {
-    fetchMe();
-  }, [fetchMe]);
+    if (!initialized) {
+      fetchMe();
+    }
+  }, [fetchMe, initialized]);
 
   useEffect(() => {
     const onAuthChanged = () => {
       console.log('AuthContext: Received trumpet:auth-changed event');
-      setLoading(true);
-      fetchMe();
+      // Don't show loading spinner for auth changes, just update silently
+      fetchMe(false);
     };
     window.addEventListener('trumpet:auth-changed', onAuthChanged as any);
     return () => window.removeEventListener('trumpet:auth-changed', onAuthChanged as any);
