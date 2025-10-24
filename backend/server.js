@@ -393,16 +393,7 @@ app.post('/api/posts', authenticateToken, async (req, res) => {
         image_url: finalImageUrl,
         author_id: req.user.userId
       })
-      .select(`
-        *,
-        users!posts_author_id_fkey (
-          first_name,
-          last_name,
-          username,
-          occupation,
-          location
-        )
-      `)
+      .select('*')
       .single();
 
     if (error) {
@@ -427,17 +418,7 @@ app.get('/api/posts', authenticateToken, async (req, res) => {
 
     const { data: posts, error } = await supabase
       .from('posts')
-      .select(`
-        *,
-        users!posts_author_id_fkey (
-          first_name,
-          last_name,
-          username,
-          avatar,
-          occupation,
-          location
-        )
-      `)
+      .select('*')
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
