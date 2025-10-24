@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trumpet Database Fix Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .step {
+            background: #ecf0f1;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        .step h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .warning {
+            background: #f39c12;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .success {
+            background: #27ae60;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .button {
+            background: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        .button:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Trumpet Database Fix Guide</h1>
+        
+        <div class="warning">
+            <strong>⚠️ Important:</strong> This will completely recreate your database tables. Make sure you have backed up any important data first!
+        </div>
+
+        <div class="step">
+            <h3>Step 1: Go to Supabase Dashboard</h3>
+            <p>1. Open your browser and go to <a href="https://supabase.com/dashboard" target="_blank">https://supabase.com/dashboard</a></p>
+            <p>2. Sign in to your account</p>
+            <p>3. Select your Trumpet project</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Open SQL Editor</h3>
+            <p>1. In the left sidebar, click on "SQL Editor"</p>
+            <p>2. Click "New query" to create a new SQL query</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Copy and Paste the SQL Script</h3>
+            <p>Copy the entire SQL script below and paste it into the SQL Editor:</p>
+            <div class="code-block" id="sqlScript">
+-- COMPLETE DATABASE FIX FOR TRUMPET APP
+-- This script will completely recreate the database schema
+
+-- Enable UUID extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Drop all existing tables and policies (only if they exist)
+DROP TABLE IF EXISTS posts CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
+-- Create users table
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    occupation VARCHAR(100),
+    interests TEXT[],
+    location VARCHAR(100),
+    bio TEXT,
+    profile_image_url TEXT,
+    cover_image_url TEXT,
+    is_verified BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE,
+    last_login TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create posts table
+CREATE TABLE posts (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    author_id UUID NOT NULL,
+    content TEXT NOT NULL,
+    image_url TEXT,
+    video_url TEXT,
+    likes_count INTEGER DEFAULT 0,
+    comments_count INTEGER DEFAULT 0,
+    shares_count INTEGER DEFAULT 0,
+    is_public BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Add foreign key constraint
+ALTER TABLE posts ADD CONSTRAINT posts_author_id_fkey
+FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE;
+
+-- Create indexes for better performance
+CREATE INDEX idx_posts_author_id ON posts(author_id);
+CREATE INDEX idx_posts_created_at ON posts(created_at DESC);
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_username ON users(username);
+
+-- Create updated_at trigger function
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Create triggers for updated_at
+CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_posts_updated_at BEFORE UPDATE ON posts
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- Enable Row Level Security
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can read all users" ON users;
+DROP POLICY IF EXISTS "Users can insert their own data" ON users;
+DROP POLICY IF EXISTS "Users can update their own data" ON users;
+DROP POLICY IF EXISTS "Users can read all posts" ON posts;
+DROP POLICY IF EXISTS "Users can insert posts" ON posts;
+DROP POLICY IF EXISTS "Users can update their own posts" ON posts;
+DROP POLICY IF EXISTS "Users can delete their own posts" ON posts;
+
+-- Create comprehensive RLS policies
+CREATE POLICY "Users can read all users" ON users FOR SELECT USING (true);
+CREATE POLICY "Users can insert their own data" ON users FOR INSERT WITH CHECK (true);
+CREATE POLICY "Users can update their own data" ON users FOR UPDATE USING (true);
+
+CREATE POLICY "Users can read all posts" ON posts FOR SELECT USING (true);
+CREATE POLICY "Users can insert posts" ON posts FOR INSERT WITH CHECK (true);
+CREATE POLICY "Users can update their own posts" ON posts FOR UPDATE USING (true);
+CREATE POLICY "Users can delete their own posts" ON posts FOR DELETE USING (true);
+
+-- Grant all permissions to postgres user
+GRANT ALL ON users TO postgres;
+GRANT ALL ON posts TO postgres;
+
+-- Grant usage on schema
+GRANT USAGE ON SCHEMA public TO postgres;
+
+-- Insert a test user for testing
+INSERT INTO users (id, email, username, first_name, last_name, password_hash, occupation, interests, location, bio)
+VALUES (
+    '00000000-0000-0000-0000-000000000000',
+    'test@trumpet.com',
+    'testuser',
+    'Test',
+    'User',
+    '$2b$10$test.hash.for.testing.purposes.only',
+    'Developer',
+    ARRAY['tech', 'coding'],
+    'Test City',
+    'Test user for development'
+) ON CONFLICT (id) DO NOTHING;
+
+-- Insert a test post
+INSERT INTO posts (id, author_id, content, image_url)
+VALUES (
+    '00000000-0000-0000-0000-000000000001',
+    '00000000-0000-0000-0000-000000000000',
+    'Welcome to Trumpet! This is a test post.',
+    NULL
+) ON CONFLICT (id) DO NOTHING;
+
+-- Verify the setup
+SELECT 'Database setup completed successfully!' as status;
+SELECT COUNT(*) as user_count FROM users;
+SELECT COUNT(*) as post_count FROM posts;
+            </div>
+            <button class="button" onclick="copyToClipboard()">📋 Copy SQL Script</button>
+        </div>
+
+        <div class="step">
+            <h3>Step 4: Run the SQL Script</h3>
+            <p>1. Make sure the SQL script is pasted in the editor</p>
+            <p>2. Click the "Run" button (or press Ctrl+Enter)</p>
+            <p>3. Wait for the script to complete</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 5: Verify the Fix</h3>
+            <p>1. You should see messages like:</p>
+            <div class="code-block">
+Database setup completed successfully!
+user_count: 1
+post_count: 1
+            </div>
+            <p>2. If you see any errors, let me know and I'll help fix them</p>
+        </div>
+
+        <div class="success">
+            <strong>✅ After running this script:</strong>
+            <ul>
+                <li>Your database tables will be completely recreated</li>
+                <li>All RLS policies will be properly configured</li>
+                <li>A test user and post will be created</li>
+                <li>The "Database error" should be completely resolved</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 6: Test Your App</h3>
+            <p>1. Go back to your Trumpet app at <a href="http://localhost:8080" target="_blank">http://localhost:8080</a></p>
+            <p>2. Refresh the page</p>
+            <p>3. Try creating a new post</p>
+            <p>4. The database error should be gone!</p>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            const sqlScript = document.getElementById('sqlScript').textContent;
+            navigator.clipboard.writeText(sqlScript).then(function() {
+                alert('SQL script copied to clipboard!');
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-// Test database connection and table existence
+// Test database connection
 const { createClient } = require('@supabase/supabase-js');
 
 const supabaseUrl = 'https://jyhqegfijgkzotopvhcg.supabase.co';
@@ -7,53 +7,72 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function testDatabase() {
+  console.log('🔍 Testing database connection...');
+  
   try {
-    console.log('Testing database connection...');
-    
-    // Test 1: Check if users table exists
-    console.log('\n1. Testing users table...');
-    const { data: users, error: usersError } = await supabase
-      .from('users')
-      .select('id')
-      .limit(1);
-    
-    if (usersError) {
-      console.log('❌ Users table error:', usersError.message);
-    } else {
-      console.log('✅ Users table exists');
-    }
-    
-    // Test 2: Check if posts table exists
-    console.log('\n2. Testing posts table...');
+    // Test 1: Check if posts table exists
+    console.log('📋 Testing posts table...');
     const { data: posts, error: postsError } = await supabase
       .from('posts')
-      .select('id')
+      .select('*')
       .limit(1);
     
     if (postsError) {
-      console.log('❌ Posts table error:', postsError.message);
-    } else {
-      console.log('✅ Posts table exists');
+      console.error('❌ Posts table error:', postsError);
+      return;
     }
     
-    // Test 3: Try to create a test post
-    console.log('\n3. Testing post creation...');
-    const { data: newPost, error: createError } = await supabase
+    console.log('✅ Posts table accessible');
+    console.log('📊 Posts count:', posts?.length || 0);
+    
+    // Test 2: Check if users table exists
+    console.log('👥 Testing users table...');
+    const { data: users, error: usersError } = await supabase
+      .from('users')
+      .select('*')
+      .limit(1);
+    
+    if (usersError) {
+      console.error('❌ Users table error:', usersError);
+      return;
+    }
+    
+    console.log('✅ Users table accessible');
+    console.log('👤 Users count:', users?.length || 0);
+    
+    // Test 3: Try to insert a test post
+    console.log('📝 Testing post creation...');
+    const testPost = {
+      id: 'test-' + Date.now(),
+      content: 'Test post from connection test',
+      author_id: users?.[0]?.id || '00000000-0000-0000-0000-000000000000'
+    };
+    
+    const { data: newPost, error: insertError } = await supabase
       .from('posts')
-      .insert({
-        author_id: 'dd371475-c9e8-4927-a2ed-640f1549c47c',
-        content: 'Test post from database test'
-      })
-      .select();
+      .insert(testPost)
+      .select('*')
+      .single();
     
-    if (createError) {
-      console.log('❌ Post creation error:', createError.message);
-    } else {
-      console.log('✅ Post created successfully:', newPost);
+    if (insertError) {
+      console.error('❌ Post creation error:', insertError);
+      return;
     }
+    
+    console.log('✅ Post creation successful');
+    console.log('📄 Created post:', newPost);
+    
+    // Clean up test post
+    await supabase
+      .from('posts')
+      .delete()
+      .eq('id', testPost.id);
+    
+    console.log('🧹 Test post cleaned up');
+    console.log('🎉 Database connection test completed successfully!');
     
   } catch (error) {
-    console.error('❌ Database test failed:', error.message);
+    console.error('💥 Database test failed:', error);
   }
 }
 
